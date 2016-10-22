@@ -2,7 +2,7 @@ import com.cycling74.max.*;
 import org.eclipse.paho.client.mqttv3.*;
 import java.util.UUID;
 
-public class mqttsub extends MaxObject implements MqttCallback {
+public class mqttpub extends MaxObject implements MqttCallback {
 
 	String client_id = "mqtt4maxmsp_" + UUID.randomUUID();
 
@@ -12,9 +12,9 @@ public class mqttsub extends MaxObject implements MqttCallback {
 	int port;
 	String topic;
 
-	public mqttsub(Atom[] args) {
+	public mqttpub(Atom[] args) {
 		declareInlets(new int[]{DataTypes.ALL});
-		declareOutlets(new int[]{DataTypes.ALL});
+		declareOutlets(new int[]{});
 		
 		if (args.length < 2) {
 			clearParams();
@@ -66,8 +66,6 @@ public class mqttsub extends MaxObject implements MqttCallback {
 
 			client.setCallback(this);
 			client.connect(opts);
-			
-			client.subscribe(topic);
         }
 		catch (Exception e) {
 			error("exception occured in connectSession()");
@@ -95,8 +93,6 @@ public class mqttsub extends MaxObject implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage msg) throws Exception {
-	    String str = new String(msg.getPayload());
-	    outlet(0, str);
 	}
 
 	@Override
